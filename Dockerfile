@@ -1,20 +1,26 @@
-# Utiliser une image de base Python
-FROM python:3.9-slim
+# syntax=docker/dockerfile:1
 
-# Définir le répertoire de travail
-WORKDIR /app
+ARG PYTHON_VERSION=3.12.6
 
-# Copier les fichiers de dépendances
-COPY requirements.txt .
+FROM python:${PYTHON_VERSION}-slim
 
-# Installer les dépendances
-RUN pip install --no-cache-dir -r requirements.txt
+LABEL fly_launch_runtime="flask"
 
-# Copier le reste de l'application
+WORKDIR /code
+
+# Installer les dépendances systèmes nécessaires pour OpenCV et nettoyer après
+RUN apt-get update && \
+    apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+COPY requirements.txt requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
+
 COPY . .
 
-# Exposer le port sur lequel l'application écoute
-EXPOSE 8000
+EXPOSE 8080
 
-# Commande pour démarrer l'application
-CMD ["python", "app.py"]
+CMD [ "python3", "-m", "flask", "run", "--host=0.0.0.0", "--port=8080"]

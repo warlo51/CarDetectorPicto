@@ -1,6 +1,6 @@
-Flask
-flask-cors
-Pillow
-opencv-python-headless
-ultralytics
-torch
+Flask==3.0.3
+flask-cors==5.0.0
+Pillow==10.4.0
+opencv-python-headless==4.7.0.72
+ultralytics==8.2.93
+torch==2.4.1
