@@ -3,4 +3,4 @@ flask-cors
 Pillow
 opencv-python-headless
 ultralytics
-torch==1.9.0+cpu  # Version CPU plus légère, remplace avec la version voulue
+torch
